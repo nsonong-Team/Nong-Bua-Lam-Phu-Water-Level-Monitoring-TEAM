@@ -490,7 +490,7 @@ body {
 }
 
 .leaflet-tile-pane {
-  filter: saturate(.15) brightness(.35) contrast(1.3) hue-rotate(10deg);
+  filter: saturate(.15) brightness(.65) contrast(1.3) hue-rotate(10deg);
 }
 
 .leaflet-control-zoom {
