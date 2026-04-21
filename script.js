@@ -184,9 +184,9 @@ function dR() {
       }).addTo(map);
     }
   }
-
-  dr(pn, "#0ea5e9");
-  dr(mg, "#ab47bc");
+// man u just del line in map
+  //dr(pn, "#0ea5e9");
+  //dr(mg, "#ab47bc");
 }
 
 function mM(s) {
