@@ -875,6 +875,58 @@ body {
   background: repeating-linear-gradient(90deg, transparent, transparent 25%, var(--w5) 50%, transparent 75%, transparent);
 }
 
+.leaflet-top.leaflet-left {
+  top: 40px !important;
+}
+
+.menu-btn {
+  background: var(--gl2);
+  border: 1px solid rgba(33, 150, 243, .2);
+  color: var(--tx);
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-family: Kanit;
+  font-size: 12px;
+  text-decoration: none;
+  display: inline-block;
+  backdrop-filter: blur(8px);
+  transition: .2s;
+}
+
+.menu-btn:hover {
+  background: var(--w6);
+}
+
+.topbar {
+  position: relative;
+}
+
+.top-menu {
+  position: absolute;
+  right: 290px;
+  top: 10px;
+  display: flex;
+  gap: 8px;
+  z-index: 999;
+}
+
+.top-menu button {
+  background: var(--gl2);
+  border: 1px solid rgba(33, 150, 243, .2);
+  color: var(--tx);
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-family: Kanit;
+  font-size: 12px;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  transition: .2s;
+}
+
+.top-menu button:hover {
+  background: var(--w6);
+}
+
 @keyframes wv {
   from {
     transform: translateX(0);
@@ -901,6 +953,23 @@ body {
 
   .mobtn {
     display: flex !important;
+  }  
+
+  .top-menu {
+    position: absolute;
+    right: 10px;
+    top: 80px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    z-index: 999;
+  }
+
+  .menu-btn {
+    font-size: 11px;
+    padding: 6px 10px;
+    white-space: nowrap;
+    text-align: center;
   }
 }
 
