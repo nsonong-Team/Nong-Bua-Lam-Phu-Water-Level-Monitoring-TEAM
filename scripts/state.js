@@ -1,0 +1,44 @@
+let intervalId;
+
+let L = {},
+  rp = [],
+  map,
+  mk = {},
+  aU = localStorage.getItem("aU") || "",
+  rI = parseInt(localStorage.getItem("rI") || "30");
+
+function gs(s, l) {
+  if (l >= s.rd)
+    return {
+      t: "วิกฤติ",
+      c: "r",
+      f: "ธงแดง",
+      e: "🔴",
+      co: "var(--rd)"
+    };
+
+  if (l >= s.yl)
+    return {
+      t: "เฝ้าระวัง",
+      c: "y",
+      f: "ธงเหลือง",
+      e: "🟡",
+      co: "var(--yl)"
+    };
+
+  return {
+    t: "ปกติ",
+    c: "g",
+    f: "ธงเขียว",
+    e: "🟢",
+    co: "var(--gn)"
+  };
+}
+
+function iL() {
+  D.forEach(s => {
+    const b = s.gm - 2,
+      r = s.rd - b;
+    L[s.id] = Math.round((b + Math.random() * r * .6) * 10) / 10;
+  });
+}
