@@ -7,6 +7,7 @@ const D = [
   { id: 6, nm: "ปตร.หนองหว้าใหญ่", vl: "บ้านหนองหว้าใหญ่", mo: 1, tb: "หนองหว้า", ap: "เมืองฯ", la: 17.17981, ln: 102.38617, el: 216, rd: 216, yl: 215.5, gm: 215, ds: 10, rv: "p" },
   { id: 7, nm: "วังหมื่น", vl: "บ้านวังหมื่น", mo: 4, tb: "หนองบัว", ap: "เมืองฯ", la: 17.18317, ln: 102.43244, el: 210, rd: 210, yl: 209.5, gm: 209, ds: 18.8, rv: "p" },
   { id: 8, nm: "ปตร.ปู่หลอด", vl: "บ้านโนนคูณ", mo: 3, tb: "บ้านขาม", ap: "เมืองฯ", la: 17.11487, ln: 102.45435, el: 203, rd: 203, yl: 202.5, gm: 202.5, ds: 8.07, rv: "p" },
+  { id: 9, nm: "บ้านข้องโป้", vl: "บ้านข้องโป้", mo: 0, tb: "-", ap: "เมืองฯ", la: 17.10, ln: 102.40, el: 201, rd: 201, yl: 200.5, gm: 200, ds: 0, rv: "p" },
   { id: 10, nm: "ปตร.หัวนา", vl: "บ้านดอนหัน", mo: 10, tb: "หัวนา", ap: "เมืองฯ", la: 17.00067, ln: 102.424, el: 191, rd: 191, yl: 190.5, gm: 190, ds: 0, rv: "p" },
   { id: 11, nm: "คลองบุญทัน", vl: "บ้านบุญทัน", mo: 1, tb: "บุญทัน", ap: "สุวรรณคูหา", la: 17.54512, ln: 102.16832, el: 231, rd: 231, yl: 230.5, gm: 230, ds: 6, rv: "m" },
   { id: 12, nm: "บ้านโคก", vl: "บ้านโคก", mo: 1, tb: "บ้านโคก", ap: "สุวรรณคูหา", la: 17.54952, ln: 102.20425, el: 218, rd: 218, yl: 217.5, gm: 217, ds: 13.6, rv: "m" }
@@ -26,6 +27,8 @@ const PB = [[17.60, 101.95], [17.62, 102.00], [17.63, 102.10],
 [17.35, 101.88], [17.40, 101.87], [17.45, 101.88], 
 [17.50, 101.90], [17.55, 101.92], [17.60, 101.95]];
 const DT = [{ n: "อ.เมืองหนองบัวลำภู", la: 17.204, ln: 102.441 }, { n: "อ.นากลาง", la: 17.312, ln: 102.195 }, { n: "อ.นาวัง", la: 17.371, ln: 102.068 }, { n: "อ.สุวรรณคูหา", la: 17.548, ln: 102.183 }, { n: "อ.โนนสัง", la: 17.062, ln: 102.305 }, { n: "อ.ศรีบุญเรือง", la: 17.145, ln: 102.195 }];
+
+let intervalId;
 
 let L = {},
   rp = [],
@@ -434,6 +437,10 @@ document.getElementById("fL").oninput = function() {
     lv = parseFloat(this.value);
 
   if (isNaN(lv)) return;
+  // if (isNaN(lv) || lv < 0 || lv > 500) {
+  //   alert("ค่าระดับน้ำไม่ถูกต้อง");
+  //   return;
+  // }
 
   const x = gs(s, lv),
     el = document.getElementById("fSt");
@@ -486,6 +493,9 @@ function subR() {
     const sc = document.createElement("script");
     sc.src = aU + "?action=addReport&" + p + "&callback=_cb";
     sc.onload = () => sc.remove();
+    sc.onerror = () => {
+      alert("❌ ส่งข้อมูลไม่สำเร็จ");
+    };
     document.head.appendChild(sc);
   }
   rf();
@@ -531,13 +541,36 @@ function rrp() {
     .join("");
 }
 
+function startInterval() {
+  if (intervalId) clearInterval(intervalId);
+
+  intervalId = setInterval(() => {
+    if (aU) {
+      const sc = document.createElement("script");
+      sc.src = aU + "?action=getLevels&callback=_lc";
+      sc.onload = () => sc.remove();
+      sc.onerror = () => console.error("โหลดข้อมูลไม่สำเร็จ");
+      document.head.appendChild(sc);
+    } else sim();
+  }, rI * 1000);
+}
+
 function svCfg() {
   aU = document.getElementById("cU").value.trim();
   rI = parseInt(document.getElementById("cI").value) || 30;
+
+  const e = document.getElementById("cS");
+
+  if (aU && !aU.startsWith("http")) {
+    e.innerHTML = "❌ URL ไม่ถูกต้อง";
+    e.style.background = "var(--rd-bg)";
+    e.style.color = "var(--rd)";
+    return;
+  }
+
   localStorage.setItem("aU", aU);
   localStorage.setItem("rI", String(rI));
 
-  const e = document.getElementById("cS");
   if (aU) {
     e.innerHTML = "🟢 เชื่อมต่อแล้ว — refresh ทุก " + rI + " วินาที";
     e.style.background = "var(--gn-bg)";
@@ -547,6 +580,8 @@ function svCfg() {
     e.style.background = "var(--w7)";
     e.style.color = "var(--tx4)";
   }
+
+  startInterval();
 }
 
 window._cb = function(d) {
@@ -554,10 +589,13 @@ window._cb = function(d) {
 };
 
 window._lc = function(d) {
-  if (d && d.levels)
+  if (d && d.levels) {
     d.levels.forEach(i => {
-      if (i.stationId && i.level) L[i.stationId] = parseFloat(i.level);
+      if (i.stationId && i.level) {
+        L[i.stationId] = parseFloat(i.level);
+      }
     });
+  }
   rf();
 };
 
@@ -619,12 +657,5 @@ function uc() {
 
   setInterval(uc, 1000);
 
-  setInterval(() => {
-    if (aU) {
-      const sc = document.createElement("script");
-      sc.src = aU + "?action=getLevels&callback=_lc";
-      sc.onload = () => sc.remove();
-      document.head.appendChild(sc);
-    } else sim();
-  }, rI * 1000);
+  startInterval();
 })();

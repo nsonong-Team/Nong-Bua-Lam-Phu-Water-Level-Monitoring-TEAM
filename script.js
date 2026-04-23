@@ -71,30 +71,52 @@ function iL() {
 }
 
 function iM() {
-  map = L.map ?
-    L.map :
-    window.L.map("map", {
-      center: [17.22, 102.20],
-      zoom: 10,
-      zoomControl: true,
-      attributionControl: false
-    });
+  map = window.L.map("map", {
+    center: [17.22, 102.20],
+    zoom: 10,
+    zoomControl: true,
+    attributionControl: false
+  });
 
-  if (!map._leaflet_id)
-    map = window.L.map("map", {
-      center: [17.22, 102.20],
-      zoom: 10,
-      zoomControl: true,
-      attributionControl: false
-    });
-
+  // background map
   window.L.tileLayer(
-        "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+    "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
     {
-        maxZoom: 19
+      maxZoom: 19
     }
-    ).addTo(map);
+  ).addTo(map);
 
+  fetch("river.geojson")
+    .then(res => res.json())
+    .then(data => {
+      // glow layer
+      window.L.geoJSON(data, {
+        style: function(feature) {
+          const type = feature.properties.waterway;
+
+          if (type === "river") return { color: "#00e5ff", weight: 4 };
+          if (type === "stream") return { color: "#4fc3f7", weight: 2 };
+          if (type === "canal") return { color: "#80deea", weight: 2 };
+
+          return { color: "#aaa", weight: 1 };
+        }
+      }).addTo(map);
+
+      // main line river
+      window.L.geoJSON(data, {
+        style: function(feature) {
+          const type = feature.properties.waterway;
+
+          if (type === "river") return { color: "#00e5ff", weight: 4 };
+          if (type === "stream") return { color: "#4fc3f7", weight: 2 };
+          if (type === "canal") return { color: "#80deea", weight: 2 };
+
+          return { color: "#aaa", weight: 1 };
+        }
+      }).addTo(map);
+    });
+
+  // max size map
   window.L.polygon(PB, {
     color: "#0288d1",
     weight: 2.5,
@@ -112,10 +134,12 @@ function iM() {
     dashArray: "4 8"
   }).addTo(map);
 
+  // district name
   DT.forEach(d => {
     window.L.marker([d.la, d.ln], {
       icon: window.L.divIcon({
-        html: '<div style="font-size:10px;color:rgba(79,195,247,.35);font-family:Kanit;font-weight:300;white-space:nowrap;text-shadow:0 0 10px rgba(2,136,209,.3)">' +
+        html:
+          '<div style="font-size:10px;color:rgba(79,195,247,.35);font-family:Kanit;font-weight:300;white-space:nowrap;text-shadow:0 0 10px rgba(2,136,209,.3)">' +
           d.n +
           "</div>",
         className: "",
@@ -124,7 +148,8 @@ function iM() {
     }).addTo(map);
   });
 
-  dR();
+  // dR();
+
   D.forEach(s => mM(s));
 
   map.fitBounds(
@@ -359,23 +384,24 @@ function rL(el, rv) {
 }
 
 function rE() {
-  const el = document.getElementById("eB"),
-    sr = [...D].sort((a, b) => b.el - a.el),
-    mx = Math.max(...D.map(s => s.el));
+  const el = document.getElementById("eB");
+  if (!el) return;
 
-  el.innerHTML = sr
-    .map(s => {
-      const lv = L[s.id],
-        x = gs(s, lv),
-        h = (s.el / mx) * 100;
-      return (
-        '<div class="mebar" style="height:' + h +
-        '%;background:' + x.co +
-        ';opacity:.65" title="' + s.nm + ': ' + s.el +
-        'm" onclick="fT(' + s.id + ')"></div>'
-      );
-    })
-    .join("");
+  const sr = [...D].sort((a, b) => b.el - a.el),
+        mx = Math.max(...D.map(s => s.el));
+
+  el.innerHTML = sr.map(s => {
+    const lv = L[s.id],
+          x = gs(s, lv),
+          h = (s.el / mx) * 100;
+
+    return `
+      <div class="mebar"
+        style="height:${h}%;background:${x.co};opacity:.65"
+        onclick="fT(${s.id})">
+      </div>
+    `;
+  }).join("");
 }
 
 function fT(id) {
@@ -506,12 +532,21 @@ function rrp() {
 }
 
 function svCfg() {
-  aU = document.getElementById("cU").value.trim();
-  rI = parseInt(document.getElementById("cI").value) || 30;
+  const aU = document.getElementById("cU").value.trim();
+  const rI = parseInt(document.getElementById("cI").value) || 30;
+
+  const e = document.getElementById("cS");
+
+  if (aU && !aU.startsWith("http")) {
+    e.innerHTML = "❌ URL ไม่ถูกต้อง";
+    e.style.background = "var(--rd-bg)";
+    e.style.color = "var(--rd)";
+    return;
+  }
+
   localStorage.setItem("aU", aU);
   localStorage.setItem("rI", String(rI));
 
-  const e = document.getElementById("cS");
   if (aU) {
     e.innerHTML = "🟢 เชื่อมต่อแล้ว — refresh ทุก " + rI + " วินาที";
     e.style.background = "var(--gn-bg)";
@@ -551,14 +586,27 @@ function sim() {
 }
 
 function uc() {
-  document.getElementById("clk").textContent = new Date().toLocaleString("th-TH", {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit"
-  });
+  const isMobile = window.innerWidth <= 480;
+
+  if (isMobile) {
+    document.getElementById("clk").textContent =
+      new Date().toLocaleTimeString("th-TH", {
+        month: "short",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit"
+      });
+  } else {
+    document.getElementById("clk").textContent =
+      new Date().toLocaleString("th-TH", {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit"
+      });
+  }
 }
 
 (function() {

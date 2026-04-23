@@ -17,6 +17,7 @@
  */
 
 // ─── สถานีวัดระดับน้ำ ───
+
 const STATION_CONFIG = [
   {id:1,name:"วังปลาป้อม",amphoe:"นาวัง",river:"ลำน้ำพะเนียง",red:290,yellow:289.5,greenMax:289},
   {id:2,name:"โคกกระทอ",amphoe:"นาวัง",river:"ลำน้ำพะเนียง",red:266,yellow:265.5,greenMax:265},
@@ -35,8 +36,10 @@ const STATION_CONFIG = [
 /**
  * สร้าง Sheet เริ่มต้น — รัน 1 ครั้ง
  */
+const SHEET_ID = "13JPRSYbDL3pwAlJZ9rLvXTfaRFhNWbVtE3Tjl_ynq14";
+
 function initSheets() {
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const ss = SpreadsheetApp.openById(SHEET_ID);
   
   // ─── Sheet: CurrentLevels ───
   let current = ss.getSheetByName('CurrentLevels');
@@ -83,9 +86,9 @@ function initSheets() {
  */
 function doGet(e) {
   const action = e.parameter.action || 'getLevels';
-  const callback = e.parameter.callback || 'callback';
+  const callback = e.parameter.callback;
   let result;
-  
+
   try {
     switch (action) {
       case 'getLevels':
@@ -101,15 +104,21 @@ function doGet(e) {
         result = getConfig();
         break;
       default:
-        result = {error: 'Unknown action: ' + action};
+        result = { error: 'Unknown action: ' + action };
     }
   } catch (err) {
-    result = {error: err.toString()};
+    result = { error: err.toString() };
   }
-  
-  // JSONP response
-  const output = callback + '(' + JSON.stringify(result) + ')';
-  return ContentService.createTextOutput(output).setMimeType(ContentService.MimeType.JAVASCRIPT);
+
+  if (callback && /^[a-zA-Z0-9_]+$/.test(callback)) {
+    return ContentService
+      .createTextOutput(callback + '(' + JSON.stringify(result) + ')')
+      .setMimeType(ContentService.MimeType.JAVASCRIPT);
+  } else {
+    return ContentService
+      .createTextOutput(JSON.stringify(result))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
 }
 
 /**
@@ -138,42 +147,45 @@ function doPost(e) {
  * ดึงระดับน้ำปัจจุบัน
  */
 function getLevels() {
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const ss = SpreadsheetApp.openById(SHEET_ID);
   const sheet = ss.getSheetByName('CurrentLevels');
-  if (!sheet) return {error: 'Sheet CurrentLevels not found. Run initSheets() first.'};
-  
+
+  if (!sheet) return {error: 'Sheet CurrentLevels not found'};
+
   const data = sheet.getDataRange().getValues();
   const headers = data[0];
   const levels = [];
-  
+
   for (let i = 1; i < data.length; i++) {
     const row = {};
     headers.forEach((h, j) => { row[h] = data[i][j]; });
+
     if (row.stationId && row.level !== '') {
       levels.push({
         stationId: row.stationId,
         name: row.stationName,
         level: row.level,
         status: row.status,
-        lastUpdate: row.lastUpdate ? row.lastUpdate.toString() : '',
-        weather: row.weather || '',
-        rain: row.rain || ''
+
+        statusCode:
+        row.status === 'ธงแดง' ? 'r' :
+        row.status === 'ธงเหลือง' ? 'y' : 'g',
+
+        weather: row.weather,
+        rain: row.rain,
+        note: row.note
       });
     }
   }
-  
-  return {
-    success: true,
-    levels: levels,
-    timestamp: new Date().toISOString()
-  };
+
+  return { success: true, levels: levels };
 }
 
 /**
  * บันทึกรายงานระดับน้ำ
  */
 function addReport(params) {
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const ss = SpreadsheetApp.openById(SHEET_ID);
   const stationId = parseInt(params.stationId || params.station_id);
   const level = parseFloat(params.level);
   
@@ -215,10 +227,10 @@ function addReport(params) {
   // 2. เพิ่มใน ReportHistory
   const history = ss.getSheetByName('ReportHistory');
   if (history) {
-    history.insertRowAfter(1);
-    history.getRange(2, 1, 1, 11).setValues([[
-      now, date, time, stationId, stationName, level, status, weather, rain, note, Session.getActiveUser().getEmail() || 'web'
-    ]]);
+    history.appendRow([
+      now, date, time, stationId, stationName, level,
+      status, weather, rain, note,
+      Session.getActiveUser().getEmail() || 'web']);
   }
   
   return {
@@ -246,7 +258,7 @@ function getStatusText(stationId, level) {
  * ดึงประวัติรายงาน
  */
 function getHistory(limit) {
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const ss = SpreadsheetApp.openById(SHEET_ID);
   const sheet = ss.getSheetByName('ReportHistory');
   if (!sheet) return {error: 'Sheet ReportHistory not found'};
   
@@ -269,7 +281,7 @@ function getHistory(limit) {
  * ดึงตั้งค่าสถานี
  */
 function getConfig() {
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const ss = SpreadsheetApp.openById(SHEET_ID);
   const sheet = ss.getSheetByName('StationConfig');
   if (!sheet) return {error: 'Sheet StationConfig not found'};
   
@@ -332,7 +344,7 @@ function setupAlertTrigger() {
  * ตรวจสอบสถานะและแจ้งเตือน
  */
 function checkAlerts() {
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const ss = SpreadsheetApp.openById(SHEET_ID);
   const sheet = ss.getSheetByName('CurrentLevels');
   if (!sheet) return;
   
@@ -376,17 +388,22 @@ function checkAlerts() {
  * ส่ง LINE Notify
  */
 function sendLineNotify(token, message) {
+  if (!token) return;
+
   const url = 'https://notify-api.line.me/api/notify';
   const options = {
     method: 'post',
-    headers: {'Authorization': 'Bearer ' + token},
-    payload: {'message': message}
+    headers: {
+      'Authorization': 'Bearer ' + token
+    },
+    payload: {
+      message: message
+    },
+    muteHttpExceptions: true
   };
-  try {
-    UrlFetchApp.fetch(url, options);
-  } catch (e) {
-    console.error('LINE Notify error:', e);
-  }
+
+  const res = UrlFetchApp.fetch(url, options);
+  console.log("LINE Notify:", res.getContentText());
 }
 
 /**
