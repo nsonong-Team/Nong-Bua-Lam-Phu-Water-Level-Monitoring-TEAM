@@ -577,14 +577,27 @@ function sim() {
 }
 
 function uc() {
-  document.getElementById("clk").textContent = new Date().toLocaleString("th-TH", {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit"
-  });
+  const isMobile = window.innerWidth <= 480;
+
+  if (isMobile) {
+    document.getElementById("clk").textContent =
+      new Date().toLocaleTimeString("th-TH", {
+        month: "short",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit"
+      });
+  } else {
+    document.getElementById("clk").textContent =
+      new Date().toLocaleString("th-TH", {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit"
+      });
+  }
 }
 
 (function() {

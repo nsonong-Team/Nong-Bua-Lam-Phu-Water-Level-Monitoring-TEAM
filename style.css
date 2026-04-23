@@ -990,4 +990,38 @@ body {
   cursor: pointer;
 }
 
-/* --- END OF FILE --- */
+@media (max-width: 480px) {
+
+  .tb-r {
+    gap: 5px;
+    max-width: 55%;
+  }
+
+  .live {
+    padding: 2px 6px;
+    font-size: 9px;
+  }
+
+  .clk {
+    font-size: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .top-menu {
+    position: fixed;
+    right: 8px;
+    top: 70px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 99999;
+  }
+
+  .menu-btn {
+    font-size: 10px;
+    padding: 5px 8px;
+    min-height: 32px;
+  }
+}
