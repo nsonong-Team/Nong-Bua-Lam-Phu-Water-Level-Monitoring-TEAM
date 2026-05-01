@@ -8,7 +8,8 @@ function iM() {
 
   // background map
   window.L.tileLayer(
-    "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+    //"https://api.maptiler.com/maps/hybrid/{z}/{x}/{y}.jpg?key=8w48IpzMfnzEHpa2wQww",
     {
       maxZoom: 19
     }
