@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>กราฟการกระจายตัวของระดับน้ำ</title>
+    <link rel="stylesheet" href="style-distribution.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="index-main.html" class="back-btn">← กลับหน้าหลัก</a>
+            <h1>📊 กราฟการกระจายตัวของระดับน้ำ</h1>
+            <p class="subtitle">การแจกแจงแบบปกติ (Normal Distribution)</p>
+        </header>
+
+        <div class="content">
+            <div class="controls">
+                <div class="control-group">
+                    <label for="meanValue">ค่าเฉลี่ย (Mean):</label>
+                    <input type="number" id="meanValue" value="100" step="1">
+                </div>
+                <div class="control-group">
+                    <label for="stdDevValue">ส่วนเบี่ยงเบน (Std Dev):</label>
+                    <input type="number" id="stdDevValue" value="12" step="0.1" min="0.1">
+                </div>
+                <button id="updateBtn" class="btn-update">อัปเดตกราฟ</button>
+            </div>
+
+            <div class="chart-wrapper">
+                <canvas id="distributionChart"></canvas>
+            </div>
+
+            <div class="statistics">
+                <h2>สถิติการกระจายตัว</h2>
+                <div class="stat-grid">
+                    <div class="stat-item">
+                        <span class="stat-label">ค่าเฉลี่ย (μ)</span>
+                        <span class="stat-value" id="statMean">100</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">ส่วนเบี่ยงเบน (σ)</span>
+                        <span class="stat-value" id="statStdDev">12</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">±1σ (68.27%)</span>
+                        <span class="stat-value">88 - 112</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">±2σ (95.45%)</span>
+                        <span class="stat-value">76 - 124</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="color-guide">
+                <h2>คำอธิบายสี</h2>
+                <div class="guide-items">
+                    <div class="guide-item">
+                        <span class="color-box" style="background-color: #FFD700;"></span>
+                        <span>±1σ (68.27%) - เกิดขึ้นบ่อยที่สุด</span>
+                    </div>
+                    <div class="guide-item">
+                        <span class="color-box" style="background-color: #4285F4;"></span>
+                        <span>±1σ ถึง ±2σ (27.18%) - ค่อนข้างบ่อย</span>
+                    </div>
+                    <div class="guide-item">
+                        <span class="color-box" style="background-color: #FF1744;"></span>
+                        <span>±2σ (4.55%) - หายาก</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>กราฟแสดงการกระจายตัวของระดับน้ำตามกฎการแจกแจงแบบปกติ</p>
+        </footer>
+    </div>
+
+    <script src="distribution-chart.js"></script>
+</body>
+</html>

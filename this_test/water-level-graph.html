@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>กราฟระดับน้ำ - สถานีวัดระดับน้ำ</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="water-level-graph.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📊 กราฟระดับน้ำ - ลำน้ำพะเนียง & ลำน้ำโมง</h1>
+            <p class="subtitle">วัดระดับน้ำ ณ สถานีต่างๆ ประจำวัน</p>
+        </header>
+
+        <div class="control-panel">
+            <div class="input-group">
+                <label for="waterLevelInput">ระดับน้ำ (ม.รทก.):</label>
+                <input type="number" id="waterLevelInput" placeholder="ป้อนระดับน้ำ" step="0.1">
+            </div>
+            <button id="updateChartBtn" class="btn-primary">อัปเดตกราฟ</button>
+        </div>
+
+        <div class="chart-wrapper">
+            <canvas id="waterLevelChart"></canvas>
+        </div>
+
+        <div class="status-panel">
+            <div id="statusMessage" class="status-message"></div>
+            <div class="legend">
+                <span class="legend-item">
+                    <span class="legend-color" style="background-color: #00e676;"></span>
+                    ปกติ (เขียว)
+                </span>
+                <span class="legend-item">
+                    <span class="legend-color" style="background-color: #ffd600;"></span>
+                    เตือน (เหลือง)
+                </span>
+                <span class="legend-item">
+                    <span class="legend-color" style="background-color: #ff1744;"></span>
+                    วิกฤติ (แดง)
+                </span>
+            </div>
+        </div>
+
+        <div class="data-table">
+            <h2>ตารางข้อมูลสถานี</h2>
+            <table id="stationTable">
+                <thead>
+                    <tr>
+                        <th>ลำดับ</th>
+                        <th>ชื่อสถานี</th>
+                        <th>ระดับน้ำปัจจุบัน</th>
+                        <th>เกณฑ์เตือน (เหลือง)</th>
+                        <th>เกณฑ์วิกฤติ (แดง)</th>
+                        <th>สถานะ</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="water-level-graph.js"></script>
+</body>
+</html>

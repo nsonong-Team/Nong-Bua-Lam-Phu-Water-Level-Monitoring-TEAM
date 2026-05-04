@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>กราฟระดับน้ำ — ระบบเฝ้าระวังสถานการณ์น้ำ จ.หนองบัวลำภู</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg'><text y='32' font-size='32'>📈</text></svg>">
+
+  <!-- Google Fonts: Kanit + Sarabun -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@200;300;400;500;600;700&family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Chart.js v4 + Annotation plugin -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1/dist/chartjs-plugin-annotation.min.js"></script>
+
+  <!--
+  <link rel="stylesheet" href="styles/water-level-chart.css">
+  -->
+  <link rel="stylesheet" href="water-level-chart.css">
+</head>
+<body>
+
+  <!-- ─── Topbar ───────────────────────────────────── -->
+  <header class="topbar">
+    <div class="tb-l">
+      <div class="logo">📈</div>
+      <div>
+        <div class="tb-t">กราฟระดับน้ำ</div>
+        <div class="tb-s">ระบบเฝ้าระวังสถานการณ์น้ำ จ.หนองบัวลำภู</div>
+      </div>
+    </div>
+    <div class="tb-r">
+      <div class="live"><span class="ld"></span>Live</div>
+      <a href="index.html" class="btn-back">← แผนที่หลัก</a>
+    </div>
+  </header>
+
+  <!-- ─── Page content ──────────────────────────────── -->
+  <main class="page">
+
+    <!-- Filter Bar -->
+    <section class="filter-bar">
+      <div class="fg">
+        <label class="fl" for="riverSelect">ลำน้ำ</label>
+        <select class="fs" id="riverSelect">
+          <option value="p">ลำน้ำพะเนียง</option>
+          <option value="m">ลำน้ำโมง</option>
+        </select>
+      </div>
+      <div class="fg">
+        <label class="fl" for="stationSelect">สถานี</label>
+        <select class="fs" id="stationSelect"></select>
+      </div>
+      <div class="fg">
+        <label class="fl" for="timeRange">ช่วงเวลา</label>
+        <select class="fs" id="timeRange">
+          <option value="24">24 ชั่วโมง</option>
+          <option value="48">48 ชั่วโมง</option>
+          <option value="168">7 วัน</option>
+        </select>
+      </div>
+    </section>
+
+    <!-- Stat Cards -->
+    <section class="stat-cards">
+
+      <div class="stat-card">
+        <div class="sc-label">ระดับน้ำปัจจุบัน</div>
+        <div class="sc-val" id="valLevel">—</div>
+        <div class="sc-unit">ม.รทก. (เมตรเหนือระดับน้ำทะเลปานกลาง)</div>
+      </div>
+
+      <div class="stat-card card-status" id="cardStatus">
+        <div class="sc-label">สถานะ</div>
+        <div class="sc-val" id="valStatus">—</div>
+        <div class="sc-unit">สถานะปัจจุบัน</div>
+      </div>
+
+      <div class="stat-card card-yl">
+        <div class="sc-label">เกณฑ์เฝ้าระวัง</div>
+        <div class="sc-val" id="valYl">—</div>
+        <div class="sc-unit">ม.รทก.</div>
+      </div>
+
+      <div class="stat-card card-rd">
+        <div class="sc-label">เกณฑ์วิกฤติ</div>
+        <div class="sc-val" id="valRd">—</div>
+        <div class="sc-unit">ม.รทก.</div>
+      </div>
+
+    </section>
+
+    <!-- Chart Section -->
+    <section class="chart-section">
+
+      <div class="chart-header">
+        <div>
+          <div class="chart-title" id="chartTitle">กราฟระดับน้ำ</div>
+          <div class="chart-subtitle" id="chartSub">—</div>
+        </div>
+        <div class="chart-legend">
+          <span class="leg-item">
+            <span class="leg-line" style="background:#2196f3"></span>
+            ระดับน้ำ
+          </span>
+          <span class="leg-item">
+            <span class="leg-dash" style="border-color:#ffd600"></span>
+            เกณฑ์เฝ้าระวัง
+          </span>
+          <span class="leg-item">
+            <span class="leg-dash" style="border-color:#ff1744"></span>
+            เกณฑ์วิกฤติ
+          </span>
+        </div>
+      </div>
+
+      <!-- Alert banner (shown when warning/critical) -->
+      <div class="status-alert" id="statusAlert"></div>
+
+      <div class="chart-wrap">
+        <canvas id="waterChart"></canvas>
+      </div>
+
+    </section>
+
+    <!-- All Stations Grid -->
+    <section class="stations-section">
+      <h3 class="sec-title">สถานะทุกสถานีในลำน้ำ</h3>
+      <div class="stations-grid" id="stationsGrid"></div>
+    </section>
+
+  </main>
+
+  <!--
+  <script src="scripts/water-level-chart.js"></script>
+  -->
+  <script src="water-level-chart.js"></script>
+</body>
+</html>
