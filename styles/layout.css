@@ -152,9 +152,50 @@
   position: absolute;
   right: 290px;
   top: 10px;
-  display: flex;
-  gap: 8px;
   z-index: 999;
+}
+
+.nav-select-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.nav-icon {
+  position: absolute;
+  left: 10px;
+  font-size: 14px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.nav-caret {
+  position: absolute;
+  right: 10px;
+  color: var(--w3);
+  font-size: 10px;
+  pointer-events: none;
+}
+
+.nav-select {
+  appearance: none;
+  background: var(--gl2);
+  border: 1px solid rgba(33, 150, 243, .2);
+  border-radius: 8px;
+  color: var(--tx);
+  font-family: Kanit;
+  font-size: 12px;
+  padding: 6px 32px 6px 30px;
+  cursor: pointer;
+  outline: none;
+  backdrop-filter: blur(8px);
+  min-width: 160px;
+  transition: .2s;
+}
+
+.nav-select:focus {
+  border-color: rgba(79, 195, 247, .5);
+  box-shadow: 0 0 0 3px rgba(33, 150, 243, .15);
 }
 
 .top-menu button {

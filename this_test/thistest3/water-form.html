@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>แบบฟอร์มบันทึกข้อมูลน้ำ — จ.หนองบัวลำภู</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📋</text></svg>">
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@200;300;400;500;600&family=Sarabun:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="water-form.css">
+</head>
+
+<body>
+
+  <!-- Topbar -->
+  <div class="topbar">
+    <div class="tb-brand">
+      <div class="tb-logo">📋</div>
+      <div>
+        <div class="tb-title">บันทึกข้อมูลสถานการณ์น้ำ</div>
+        <div class="tb-sub">จ.หนองบัวลำภู — Water Data Entry</div>
+      </div>
+    </div>
+    <div class="live-badge">
+      <span class="live-dot"></span>FORM
+    </div>
+  </div>
+
+  <!-- ── STEP 1: เลือกประเภท ── -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-header-icon">1️⃣</span>
+      <span class="card-title">เลือกประเภทข้อมูลที่จะบันทึก</span>
+    </div>
+    <div class="card-body">
+      <div class="type-grid" id="typeCards">
+        <!-- render by JS -->
+      </div>
+      <div class="select-hint">เลือก 1 ประเภท แล้วฟอร์มจะแสดงขึ้นมา</div>
+    </div>
+  </div>
+
+  <!-- ── STEP 2: กรอกข้อมูล ── -->
+  <div class="card main-fields hidden" id="mainFields">
+    <div class="card-header">
+      <span class="card-header-icon">2️⃣</span>
+      <span class="card-title">กรอกข้อมูล</span>
+    </div>
+    <div class="card-body">
+
+      <!-- วันที่ + เวลา -->
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">วันที่</label>
+          <input type="date" class="form-input" id="fDate">
+        </div>
+        <div class="form-group">
+          <label class="form-label">เวลา</label>
+          <input type="time" class="form-input" id="fTime">
+        </div>
+      </div>
+
+      <!-- ลำน้ำ + สถานี -->
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">ลำน้ำ</label>
+          <div class="select-wrap">
+            <select class="form-select" id="fRiver">
+              <option value="">-- เลือก --</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">สถานี</label>
+          <div class="select-wrap">
+            <select class="form-select" id="fStation">
+              <option value="">-- เลือกสถานี --</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- ผู้รายงาน + สภาพอากาศ -->
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">ชื่อผู้รายงาน</label>
+          <input type="text" class="form-input" id="fReporter" placeholder="ชื่อ-สกุล / รหัสเจ้าหน้าที่">
+        </div>
+        <div class="form-group">
+          <label class="form-label">สภาพอากาศ</label>
+          <div class="select-wrap">
+            <select class="form-select" id="fWeather">
+              <option value="">-- เลือก --</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- ค่าวัดน้ำฝน -->
+      <div class="value-section rain-section hidden" id="fieldRain">
+        <div class="value-section-title">🌧️ ข้อมูลน้ำฝน</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">ปริมาณน้ำฝนสะสม</label>
+            <div class="input-unit-wrap">
+              <input type="number" step="0.1" min="0" class="form-input" id="fRain" placeholder="เช่น 45.5">
+              <span class="input-unit">มม.</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">ระยะเวลาสะสม</label>
+            <div class="select-wrap">
+              <select class="form-select" id="fRainPeriod">
+                <option value="">-- เลือก --</option>
+                <option value="1h">1 ชั่วโมง</option>
+                <option value="3h">3 ชั่วโมง</option>
+                <option value="6h">6 ชั่วโมง</option>
+                <option value="12h">12 ชั่วโมง</option>
+                <option value="24h">24 ชั่วโมง (รายวัน)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ค่าวัดระดับน้ำ -->
+      <div class="value-section level-section hidden" id="fieldLevel">
+        <div class="value-section-title">📏 ข้อมูลระดับน้ำ</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">ระดับน้ำ (ม.รทก.)</label>
+            <div class="input-unit-wrap">
+              <input type="number" step="0.1" class="form-input" id="fLevel" placeholder="เช่น 289.2">
+              <span class="input-unit">ม.รทก.</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">สถานะ (อัตโนมัติ)</label>
+            <div class="status-badge" id="statusBadge">—</div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">แนวโน้ม</label>
+            <div class="select-wrap">
+              <select class="form-select" id="fTrend">
+                <option value="">-- เลือก --</option>
+                <option value="up">📈 เพิ่มขึ้น</option>
+                <option value="stable">➡️ ทรงตัว</option>
+                <option value="down">📉 ลดลง</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <!-- placeholder col -->
+          </div>
+        </div>
+      </div>
+
+      <!-- หมายเหตุ -->
+      <div class="form-row single" style="margin-bottom:14px">
+        <div class="form-group">
+          <label class="form-label">หมายเหตุ / Note</label>
+          <textarea class="form-textarea" id="fNote" placeholder="เช่น น้ำเอ่อล้นตลิ่ง, สังเกตเห็นสิ่งผิดปกติ..."></textarea>
+        </div>
+      </div>
+
+      <!-- Buttons -->
+      <div class="btn-row">
+        <button class="btn btn-secondary" id="btnClear">ล้างข้อมูล</button>
+        <button class="btn btn-primary" id="btnSubmit">📤 ส่งข้อมูล</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── ประวัติการส่ง ── -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-header-icon">📄</span>
+      <span class="card-title">ประวัติการบันทึก (session นี้)</span>
+    </div>
+    <div class="card-body">
+      <div id="historyList">
+        <div class="hist-empty">ยังไม่มีรายการ</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── ตั้งค่า Apps Script URL ── -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-header-icon">⚙️</span>
+      <span class="card-title">ตั้งค่า Google Apps Script</span>
+    </div>
+    <div class="card-body">
+      <div class="form-group" style="margin-bottom:8px">
+        <label class="form-label">Apps Script URL (Web App)</label>
+        <div class="config-row">
+          <input type="url" class="form-input" id="gasUrlInput"
+            placeholder="https://script.google.com/macros/s/...">
+          <button class="btn btn-secondary" id="btnSaveUrl" style="white-space:nowrap">💾 บันทึก</button>
+        </div>
+      </div>
+      <div class="conn-status" id="connStatus">⚪ ยังไม่ได้ตั้งค่า</div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <script src="water-form.js"></script>
+  <script src="water-form-data.js"></script>
+</body>
+</html>
