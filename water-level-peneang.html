@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ลำน้ำพะเนียง — สถานการณ์น้ำ จ.หนองบัวลำภู</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800&family=Sarabun:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="styles/water-level-peneang.css">
+</head>
+<body>
+
+    <!-- Header UI -->
+    <div class="hdr">
+        <div class="hl">
+            <a href="index.html" class="hback">← กลับแผนที่หลัก</a>
+            <div class="hlogo">🌊</div>
+            <div>
+                <div class="htitle">ลำน้ำพะเนียง — จ.หนองบัวลำภู</div>
+                <div class="hsub" id="dtLbl">ข้อมูลอัปเดตล่าสุด</div>
+            </div>
+        </div>
+        <div class="hr">
+            <div class="hk">
+                <div class="hkn" style="color:#69f0ae" id="hG">0</div>
+                <div class="hkl">ปกติ</div>
+            </div>
+            <div class="hk">
+                <div class="hkn" style="color:#ffd600" id="hY">0</div>
+                <div class="hkl">เฝ้าระวัง</div>
+            </div>
+            <div class="hk">
+                <div class="hkn" style="color:#ff5252" id="hR">0</div>
+                <div class="hkl">วิกฤติ</div>
+            </div>
+            <div class="hbadge"><span class="hdot"></span>LIVE</div>
+        </div>
+    </div>
+
+    <!-- Navigation Hint -->
+    <div class="hint" id="hint">◀ เลื่อนซ้าย-ขวา ดูสถานีต้นน้ำ → ปลายน้ำ ▶</div>
+
+    <!-- Map Legend -->
+    <div class="legend">
+        <div class="leg-t">สัญลักษณ์</div>
+        <div class="leg-i"><span class="leg-d" style="background:#69f0ae"></span>ปกติ (ธงเขียว)</div>
+        <div class="leg-i"><span class="leg-d" style="background:#ffd600"></span>เฝ้าระวัง (ธงเหลือง)</div>
+        <div class="leg-i"><span class="leg-d" style="background:#ff5252"></span>วิกฤติ (ธงแดง)</div>
+        <div class="leg-i"><span style="width:10px;height:10px;background:linear-gradient(135deg,#78909c,#546e7a);border-radius:2px;display:inline-block"></span>ประตูระบายน้ำ</div>
+    </div>
+
+    <!-- Main Content Wrapper -->
+    <div class="wrap" id="wrap">
+        <div class="scene" id="sc">
+            <!-- Sky Layer -->
+            <div class="sky">
+                <div class="cl" id="clds" style="position:absolute;top:0;left:0;width:200%;height:100%"></div>
+            </div>
+            
+            <!-- Mountain Layer -->
+            <div class="mtns" id="mtns"></div>
+
+            <!-- Ground Layer -->
+            <div class="ground">
+                <div class="gfill"></div>
+                <div class="gtop"></div>
+                <div class="ggrass" id="gr"></div>
+            </div>
+
+            <!-- River Layer -->
+            <div class="river">
+                <div class="rbody"></div>
+                <div class="rsurf"></div>
+                <div id="rps"></div>
+            </div>
+
+            <!-- River Bed -->
+            <div class="rbed">
+                <div class="rbed-r"></div>
+            </div>
+
+            <!-- River Names -->
+            <div class="rname" style="bottom:195px;left:300px">ลำน้ำพะเนียง</div>
+            <div class="rname" style="bottom:195px;left:2200px">PANEANG RIVER</div>
+
+            <!-- Interactive Stations Layer -->
+            <div id="sLayer"></div>
+        </div>
+    </div>
+
+    <!-- Logic Script -->
+    <script src="scripts/water-level-peneang.js"></script>
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RainMap</title>
+
+  <!-- Leaflet -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+
+  <!-- Leaflet.heat -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.heat/0.2.0/leaflet-heat.js"></script>
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="rain-map.css" />
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div id="topbar">
+  <h1>🌧️ <span>Rain</span>Map</h1>
+  <div class="sep"></div>
+
+  <div class="mode-group">
+    <button class="mode-btn active" id="modeAdd" onclick="setMode('add')">➕ บันทึกฝน</button>
+    <button class="mode-btn" id="modePan" onclick="setMode('pan')">✋ เลื่อนแผนที่</button>
+  </div>
+
+  <div class="sep"></div>
+  <div class="stat">
+    <div class="stat-dot" style="background:var(--accent)"></div>
+    จุดทั้งหมด <strong id="countStat">0</strong>
+  </div>
+  <div class="stat" style="margin-left:8px">
+    ฝนรวม <strong id="sumStat">0</strong> มม.
+  </div>
+
+  <div class="spacer"></div>
+  <button id="clearBtn" onclick="clearAll()">🗑 ล้างทั้งหมด</button>
+</div>
+
+<!-- MAP -->
+<div id="map"></div>
+
+<!-- POINT PANEL -->
+<div id="pointPanel">
+  <h3>🌧️ จุดที่บันทึก</h3>
+  <div id="pointList">
+    <div class="empty-hint">คลิกบนแผนที่<br>เพื่อบันทึกข้อมูลฝน</div>
+  </div>
+</div>
+
+<!-- HEATMAP CONTROLS -->
+<div id="heatControls">
+  <label>รัศมี (Radius) <span id="rVal">30</span>px</label>
+  <input type="range" id="radiusSlider" min="10" max="100" value="30" oninput="updateHeatOptions()">
+  <label>ความเบลอ (Blur) <span id="bVal">20</span></label>
+  <input type="range" id="blurSlider" min="5" max="80" value="20" oninput="updateHeatOptions()">
+  <label>ความโปร่งใส <span id="opVal">0.7</span></label>
+  <input type="range" id="opSlider" min="1" max="10" value="7" oninput="updateHeatOptions()">
+</div>
+
+<!-- LEGEND -->
+<div id="legend">
+  <div style="font-weight:700;color:var(--text);font-size:12px;margin-bottom:2px">ปริมาณน้ำฝน</div>
+  <div class="bar"></div>
+  <div class="row"><span>น้อย</span><span>ปานกลาง</span><span>มาก</span></div>
+</div>
+
+<!-- MODAL -->
+<div id="overlay">
+  <div id="modal">
+    <h2>🌧️ บันทึกข้อมูลฝน</h2>
+    <p class="coord" id="modalCoord"></p>
+
+    <div class="field-label">ปริมาณน้ำฝน (มม.)</div>
+    <div class="slider-wrap">
+      <input type="range" id="intensitySlider" min="1" max="100" value="50"
+             oninput="document.getElementById('intensityVal').textContent=this.value">
+      <div id="intensityVal">50</div>
+    </div>
+
+    <div class="field-label">ระดับฝน</div>
+    <div class="presets">
+      <div class="preset sel" data-color="#ff4d6d" style="background:#ff4d6d22;color:#ff4d6d" onclick="selPreset(this)">🔴 หนักมาก</div>
+      <div class="preset" data-color="#fb923c" style="background:#fb923c22;color:#fb923c" onclick="selPreset(this)">🟠 หนัก</div>
+      <div class="preset" data-color="#facc15" style="background:#facc1522;color:#facc15" onclick="selPreset(this)">🟡 ปานกลาง</div>
+      <div class="preset" data-color="#00c9a7" style="background:#00c9a722;color:#00c9a7" onclick="selPreset(this)">🟢 เบา</div>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal()">ยกเลิก</button>
+      <button class="btn-add" onclick="confirmPoint()">✅ บันทึก</button>
+    </div>
+  </div>
+</div>
+
+<!-- Script -->
+<script src="rain-map.js"></script>
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>ลำน้ำโมง — สถานการณ์น้ำ จ.หนองบัวลำภู</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800&family=Sarabun:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles/water-level-mong.css">
+</head>
+
+<body>
+
+    <div class="hdr">
+        <div class="hl">
+            <a href="index.html" class="hback">← กลับแผนที่หลัก</a>
+
+            <div class="hlogo">🌊</div>
+
+            <div>
+                <div class="htitle">ลำน้ำโมง — จ.หนองบัวลำภู</div>
+                <div class="hsub" id="dtLbl"></div>
+            </div>
+        </div>
+
+        <div class="hr">
+            <div class="hk">
+                <div class="hkn" style="color:#69f0ae" id="hG">0</div>
+                <div class="hkl">ปกติ</div>
+            </div>
+
+            <div class="hk">
+                <div class="hkn" style="color:#ffd600" id="hY">0</div>
+                <div class="hkl">เฝ้าระวัง</div>
+            </div>
+
+            <div class="hk">
+                <div class="hkn" style="color:#ff5252" id="hR">0</div>
+                <div class="hkl">วิกฤติ</div>
+            </div>
+
+            <div class="hbadge">
+                <span class="hdot"></span>
+                LIVE
+            </div>
+        </div>
+    </div>
+
+    <div class="legend">
+        <div class="leg-t">สัญลักษณ์</div>
+
+        <div class="leg-i">
+            <span class="leg-d" style="background:#69f0ae"></span>
+            ปกติ
+        </div>
+
+        <div class="leg-i">
+            <span class="leg-d" style="background:#ffd600"></span>
+            เฝ้าระวัง
+        </div>
+
+        <div class="leg-i">
+            <span class="leg-d" style="background:#ff5252"></span>
+            วิกฤติ
+        </div>
+    </div>
+
+    <div class="scene" id="sc">
+
+        <div class="sky">
+            <div class="cl" id="clds" style="position:absolute; top:0; left:0; width:200%; height:100%"></div>
+        </div>
+
+        <div class="mtns" id="mtns"></div>
+
+        <div class="ground">
+            <div class="gfill"></div>
+            <div class="gtop"></div>
+            <div class="ggrass" id="gr"></div>
+        </div>
+
+        <div class="river">
+            <div class="rbody"></div>
+            <div class="rsurf"></div>
+            <div id="rps"></div>
+        </div>
+
+        <div class="rbed">
+            <div class="rbed-r"></div>
+        </div>
+
+        <div class="rname" style="bottom:200px; left:15%">ลำน้ำโมง</div>
+        <div class="rname" style="bottom:200px; right:15%">MONG RIVER</div>
+
+        <div id="sLayer"></div>
+    </div>
+    <script src="scripts/water-level-mong.js"></script>
+</body>
+</html>
