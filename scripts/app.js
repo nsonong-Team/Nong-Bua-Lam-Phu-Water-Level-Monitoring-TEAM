@@ -56,5 +56,18 @@ function uc() {
 
   setInterval(uc, 1000);
 
+  // ✅ เพิ่ม: ดึงข้อมูลจาก Sheet ทันทีตอน load
+  if (aU) {
+  // แสดง loading ก่อน
+  document.getElementById("at").innerHTML = "⏳ กำลังโหลดข้อมูลล่าสุด...";
+  document.getElementById("ab").classList.add("show");
+
+  const sc = document.createElement("script");
+  sc.src = aU + "?action=getLevels&callback=_lc";
+  sc.onload = () => sc.remove();
+  sc.onerror = () => console.error("โหลดข้อมูลไม่สำเร็จ");
+  document.head.appendChild(sc);
+  }
+
   startInterval();
 })();

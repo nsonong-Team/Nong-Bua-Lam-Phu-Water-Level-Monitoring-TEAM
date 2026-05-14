@@ -1,3 +1,5 @@
+let LS = {};
+
 function startInterval() {
   if (intervalId) clearInterval(intervalId);
 
@@ -48,8 +50,9 @@ window._cb = function(d) {
 window._lc = function(d) {
   if (d && d.levels) {
     d.levels.forEach(i => {
-      if (i.stationId && i.level) {
+      if (i.stationId && i.level !== '') {
         L[i.stationId] = parseFloat(i.level);
+        LS[i.stationId] = i.statusCode; // เก็บ 'r', 'y', 'g'
       }
     });
   }
