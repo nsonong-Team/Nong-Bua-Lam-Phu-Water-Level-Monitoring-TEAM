@@ -41,7 +41,7 @@
     <div class="top-menu">
         <div class="nav-select-wrap">
             <span class="nav-icon">🌊</span>
-            <select class="nav-select" onchange="if(this.value) { window.open(this.value,'_blank'); this.value=''; }">
+            <select class="nav-select" onchange="if(this.value) { window.location.href = this.value; this.value=''; }">
             <option value="">เลือกหน้า...</option>
             <option value="water-level-peneang.html">ลำน้ำพะเนียง</option>
             <option value="water-level-mong.html">ลำน้ำโมง</option>
