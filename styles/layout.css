@@ -95,10 +95,15 @@
   font-size: 11px;
   gap: 8px;
   align-items: center;
-  flex-shrink: 0;
   background: linear-gradient(90deg, var(--rd-bg), rgba(255, 23, 68, .02));
   border-bottom: 1px solid var(--rd-bd);
   color: var(--rd);
+  position: fixed;
+  top: 54px;
+  left: 0;
+  right: 0;
+  z-index: 150;
+  transition: all .3s;
 }
 
 .alrt.show {
@@ -124,6 +129,11 @@
   flex: 1;
   overflow: hidden;
   height: calc(100% - 54px);
+  transition: padding-top .3s;
+}
+
+.main.alrt-on {
+  padding-top: 34px;
 }
 
 .menu-btn {

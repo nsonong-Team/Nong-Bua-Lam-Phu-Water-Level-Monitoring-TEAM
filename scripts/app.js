@@ -3,6 +3,8 @@ function rf() {
   D.forEach(s => mM(s));
   rL("lP", "p");
   rL("lM", "m");
+  rL("lMo", "mo");
+  rL("lPw", "pw");
   rE();
 }
 
@@ -59,8 +61,10 @@ function uc() {
   // ✅ เพิ่ม: ดึงข้อมูลจาก Sheet ทันทีตอน load
   if (aU) {
   // แสดง loading ก่อน
+  const main = document.querySelector(".main");
   document.getElementById("at").innerHTML = "⏳ กำลังโหลดข้อมูลล่าสุด...";
   document.getElementById("ab").classList.add("show");
+  main.classList.add("alrt-on");
 
   const sc = document.createElement("script");
   sc.src = aU + "?action=getLevels&callback=_lc";

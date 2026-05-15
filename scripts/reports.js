@@ -67,7 +67,7 @@ function swP(p, b) {
 }
 
 document.getElementById("fR").onchange = function() {
-  const sts = D.filter(s => s.rv === (this.value === "paneang" ? "p" : "m"));
+  const sts = D.filter(s => s.rv === this.value);
   document.getElementById("fS").innerHTML =
     '<option value="">-- เลือก --</option>' +
     sts.map(s => '<option value="' + s.id + '">' + s.nm + '</option>').join("");

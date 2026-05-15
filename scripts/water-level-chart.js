@@ -5,18 +5,26 @@
 
 /* ─── Station data (from scripts/data.js) ─────────── */
 const STATIONS = [
-  { id:1,  nm:"วังปลาป้อม",      ap:"นาวัง",      el:290, rd:290,   yl:289.5, gm:289,   rv:"p" },
-  { id:2,  nm:"โคกกระทอ",        ap:"นาวัง",      el:266, rd:266,   yl:265.5, gm:265,   rv:"p" },
-  { id:3,  nm:"วังสามหาบ",       ap:"นาวัง",      el:258, rd:258,   yl:257.5, gm:257,   rv:"p" },
-  { id:4,  nm:"บ้านหนองด่าน",   ap:"นากลาง",     el:249, rd:249,   yl:248.5, gm:248,   rv:"p" },
-  { id:5,  nm:"บ้านฝั่งแดง",    ap:"นากลาง",     el:237, rd:237,   yl:236.5, gm:236,   rv:"p" },
-  { id:6,  nm:"ปตร.หนองหว้าใหญ่",ap:"เมืองฯ",    el:216, rd:216,   yl:215.5, gm:215,   rv:"p" },
-  { id:7,  nm:"วังหมื่น",        ap:"เมืองฯ",    el:210, rd:210,   yl:209.5, gm:209,   rv:"p" },
-  { id:8,  nm:"ปตร.ปู่หลอด",    ap:"เมืองฯ",    el:203, rd:203,   yl:202.5, gm:202.5, rv:"p" },
-  { id:9,  nm:"บ้านข้องโป้",    ap:"เมืองฯ",    el:201, rd:201,   yl:200.5, gm:200,   rv:"p" },
-  { id:10, nm:"ปตร.หัวนา",       ap:"เมืองฯ",    el:191, rd:191,   yl:190.5, gm:190,   rv:"p" },
-  { id:11, nm:"คลองบุญทัน",      ap:"สุวรรณคูหา", el:231, rd:231,   yl:230.5, gm:230,   rv:"m" },
-  { id:12, nm:"บ้านโคก",         ap:"สุวรรณคูหา", el:218, rd:218,   yl:217.5, gm:217,   rv:"m" }
+  { id:1,  nm:"วังปลาป้อม",        ap:"นาวัง",       el:290, rd:290,   yl:289.5, gm:289,   rv:"p" },
+  { id:2,  nm:"โคกกระทอ",          ap:"นาวัง",       el:266, rd:266,   yl:265.5, gm:265,   rv:"p" },
+  { id:3,  nm:"วังสามหาบ",         ap:"นาวัง",       el:258, rd:258,   yl:257.5, gm:257,   rv:"p" },
+  { id:4,  nm:"บ้านหนองด่าน",      ap:"นากลาง",      el:249, rd:249,   yl:248.5, gm:248,   rv:"p" },
+  { id:5,  nm:"บ้านฝั่งแดง",       ap:"นากลาง",      el:237, rd:237,   yl:236.5, gm:236,   rv:"p" },
+  { id:6,  nm:"ปตร.หนองหว้าใหญ่",  ap:"เมืองฯ",      el:216, rd:216,   yl:215.5, gm:215,   rv:"p" },
+  { id:7,  nm:"วังหมื่น",          ap:"เมืองฯ",      el:210, rd:210,   yl:209.5, gm:209,   rv:"p" },
+  { id:8,  nm:"ปตร.ปู่หลอด",       ap:"เมืองฯ",      el:203, rd:203,   yl:202.5, gm:202.5, rv:"p" },
+  { id:9,  nm:"บ้านข้องโป้",       ap:"เมืองฯ",      el:201, rd:201,   yl:200.5, gm:200,   rv:"p" },
+  { id:10, nm:"ปตร.หัวนา",         ap:"เมืองฯ",      el:191, rd:191,   yl:190.5, gm:190,   rv:"p" },
+  { id:11, nm:"คลองบุญทัน",        ap:"สุวรรณคูหา",  el:231, rd:231,   yl:230.5, gm:230,   rv:"m" },
+  { id:12, nm:"บ้านโคก",           ap:"สุวรรณคูหา",  el:218, rd:218,   yl:217.5, gm:217,   rv:"m" },
+  { id:13, nm:"บ้านนาตาแหลว",      ap:"สุวรรณคูหา",  el:202, rd:202,   yl:201.5, gm:201,   rv:"m" },
+  { id:14, nm:"บ้านกุดฝั่ง",       ap:"สุวรรณคูหา",  el:192, rd:192,   yl:191.5, gm:191,   rv:"m" },
+  { id:15, nm:"อ่างเก็บน้ำมอ",     ap:"ศรีบุญเรือง", el:242, rd:242,   yl:241.5, gm:241,   rv:"mo" },
+  { id:16, nm:"บ้านวังคูณ",        ap:"ศรีบุญเรือง", el:211, rd:211,   yl:210.5, gm:210,   rv:"mo" },
+  { id:17, nm:"บ้านโนนสูงเปลือย",  ap:"ศรีบุญเรือง", el:202, rd:202,   yl:201.5, gm:201,   rv:"mo" },
+  { id:18, nm:"บ้านวังโปร่ง",      ap:"ศรีบุญเรือง", el:212, rd:212,   yl:211.5, gm:211,   rv:"pw" },
+  { id:19, nm:"บ้านทุ่งโพธิ์",     ap:"ศรีบุญเรือง", el:197, rd:197,   yl:196.5, gm:196,   rv:"pw" },
+  { id:20, nm:"บ้านโคกล่าม",       ap:"ศรีบุญเรือง", el:193, rd:193,   yl:192.5, gm:192,   rv:"pw" },
 ];
 
 /* ─── Simulated current water levels ─────────────── */
@@ -365,6 +373,34 @@ function selectStation(id) {
 /* ─── Init ────────────────────────────────────────── */
 function init() {
   initLevels();
+
+  const aU = localStorage.getItem("aU");
+  if (aU) {
+    window._lc_chart = function(d) {
+      if (d && d.levels) {
+        d.levels.forEach(i => {
+          if (i.stationId && i.level !== '') {
+            levels[i.stationId] = parseFloat(i.level);
+          }
+        });
+      }
+      // re-render หลังได้ข้อมูล
+      const stationSel = document.getElementById('stationSelect');
+      const timeRange  = document.getElementById('timeRange');
+      const station    = STATIONS.find(s => s.id === +stationSel.value);
+      if (station) {
+        updateTitle(station);
+        updateCards(station);
+        buildChart(station, +timeRange.value);
+        renderGrid(document.getElementById('riverSelect').value, station.id);
+      }
+    };
+
+    const sc = document.createElement("script");
+    sc.src = aU + "?action=getLevels&callback=_lc_chart";
+    sc.onload = () => sc.remove();
+    document.head.appendChild(sc);
+  }
 
   const riverSel   = document.getElementById('riverSelect');
   const stationSel = document.getElementById('stationSelect');

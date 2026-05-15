@@ -267,6 +267,7 @@ function uK() {
   document.getElementById("k3").textContent = r;
 
   const ab = document.getElementById("ab");
+  const main = document.querySelector(".main");
 
   if (r > 0) {
     const cr = D.filter(s => gs(s, L[s.id]).c === "r");
@@ -275,7 +276,9 @@ function uK() {
       cr.map(s => s.nm).join(", ") +
       " — เตรียมรับมือ!";
     ab.classList.add("show");
+    main.classList.add("alrt-on");
   } else {
     ab.classList.remove("show");
+    main.classList.remove("alrt-on");
   }
 }
