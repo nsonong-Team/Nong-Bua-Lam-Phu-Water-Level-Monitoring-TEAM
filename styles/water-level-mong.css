@@ -677,10 +677,12 @@ body {
 
     .wrap {
         height: auto;
+        overflow-x: auto;
     }
 
     .scene {
         min-height: 100vh;
+        width: 2000px;
     }
 
     /* HEADER */

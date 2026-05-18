@@ -681,6 +681,7 @@ body {
 
     .scene {
         min-height: 100vh;
+        width: 2000px;
     }
 
     /* HEADER */
