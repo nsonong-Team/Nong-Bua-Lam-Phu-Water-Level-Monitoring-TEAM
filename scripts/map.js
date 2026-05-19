@@ -8,8 +8,9 @@ function iM() {
 
   // background map
   window.L.tileLayer(
-    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+    //"https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
     //"https://api.maptiler.com/maps/hybrid/{z}/{x}/{y}.jpg?key=8w48IpzMfnzEHpa2wQww",
+    "https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}",
     {
       maxZoom: 19
     }
