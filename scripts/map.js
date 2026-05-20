@@ -8,25 +8,27 @@ function iM() {
 
   // background map
   window.L.tileLayer(
-    //"https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
     //"https://api.maptiler.com/maps/hybrid/{z}/{x}/{y}.jpg?key=8w48IpzMfnzEHpa2wQww",
-    "https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}",
+    //"https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}",
     {
       maxZoom: 19
     }
   ).addTo(map);
 
-  fetch("river.geojson")
+  fetch("dwr_nong_bua_lamphu_water_all.geojson")
     .then(res => res.json())
     .then(data => {
       // glow layer
       window.L.geoJSON(data, {
         style: function(feature) {
-          const type = feature.properties.waterway;
+          const cat = feature.properties.water_category;
 
-          if (type === "river") return { color: "#00e5ff", weight: 4 };
-          if (type === "stream") return { color: "#4fc3f7", weight: 2 };
-          if (type === "canal") return { color: "#80deea", weight: 2 };
+          if (cat === "natural_stream")    return { color: "#4fc3f7", weight: 2 };
+      if (cat === "manmade_canal")     return { color: "#80deea", weight: 2 };
+      if (cat === "manmade_waterbody") return { color: "#0288d1", weight: 1, fillColor: "#0288d1", fillOpacity: 0.3 };
+      if (cat === "natural_waterbody") return { color: "#00e5ff", weight: 1, fillColor: "#00acc1", fillOpacity: 0.25 };
+      if (cat === "dam_or_weir")       return { color: "#ff9800", weight: 3 };
 
           return { color: "#aaa", weight: 1 };
         }
@@ -35,11 +37,13 @@ function iM() {
       // main line river
       window.L.geoJSON(data, {
         style: function(feature) {
-          const type = feature.properties.waterway;
+          const cat = feature.properties.water_category;
 
-          if (type === "river") return { color: "#00e5ff", weight: 4 };
-          if (type === "stream") return { color: "#4fc3f7", weight: 2 };
-          if (type === "canal") return { color: "#80deea", weight: 2 };
+          if (cat === "natural_stream")    return { color: "#4fc3f7", weight: 2 };
+          if (cat === "manmade_canal")     return { color: "#80deea", weight: 2 };
+          if (cat === "manmade_waterbody") return { color: "#0288d1", weight: 1, fillColor: "#0288d1", fillOpacity: 0.3 };
+          if (cat === "natural_waterbody") return { color: "#00e5ff", weight: 1, fillColor: "#00acc1", fillOpacity: 0.25 };
+          if (cat === "dam_or_weir")       return { color: "#ff9800", weight: 3 };
 
           return { color: "#aaa", weight: 1 };
         }
