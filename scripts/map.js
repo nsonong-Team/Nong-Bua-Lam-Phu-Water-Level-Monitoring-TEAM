@@ -51,14 +51,14 @@ function iM() {
     });
 
   // max size map
-  window.L.polygon(PB, {
-    color: "#0288d1",
-    weight: 2.5,
-    opacity: .5,
-    fillColor: "#0288d1",
-    fillOpacity: .04,
-    dashArray: "10 5"
-  }).addTo(map);
+  // window.L.polygon(PB, {
+  //   color: "#0288d1",
+  //   weight: 2.5,
+  //   opacity: .5,
+  //   fillColor: "#0288d1",
+  //   fillOpacity: .04,
+  //   dashArray: "10 5"
+  // }).addTo(map);
 
   window.L.polygon(PB, {
     color: "#4fc3f7",
